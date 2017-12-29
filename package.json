@@ -1,0 +1,59 @@
+{
+  "name": "react-init",
+  "version": "1.0.0",
+  "description": "create you react project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --config webpack.config.dev.js --color && NODE_ENV=development node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolyshaw/react-init.git"
+  },
+  "keywords": [
+    "create",
+    "react"
+  ],
+  "author": "wolyshaw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wolyshaw/react-init/issues"
+  },
+  "homepage": "https://github.com/wolyshaw/react-init#readme",
+  "dependencies": {
+    "antd": "^3.0.3",
+    "classnames": "^2.2.5",
+    "isomorphic-fetch": "^2.2.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "bundle-loader": "^0.5.5",
+    "clean-webpack-plugin": "^0.1.17",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "http-proxy-middleware": "^0.17.4",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.19.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.3",
+    "webpack-hot-middleware": "^2.21.0"
+  }
+}
