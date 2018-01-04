@@ -67,6 +67,6 @@ module.exports = {
       description: config.site.description,
       header: config.site.header
     }),
-    new ExtractTextPlugin('static/[name].[hash:5].css')
+    new ExtractTextPlugin('static/play.css')
   ]
 }

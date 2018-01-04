@@ -2,31 +2,18 @@ import express from 'express'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
-import Pages from './components/pages'
+import Application from './components'
+import path from 'path'
 import fs from 'fs'
-
-// fs.readFile
 
 const app = express()
 
 function renderFullPage(html, initialState) {
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-    </head>
-    <body>
-      <div id="app">
-        ${html}
-      </div>
-      <script>
-        window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
-      </script>
-      <script type="text/javascript" src="/dist/antd.a243e.js"></script><script type="text/javascript" src="/dist/vendor.a243e.js"></script><script type="text/javascript" src="/dist/app.a243e.js"></script></body>
-      </body>
-    </html>
-  `
+  return fs.readFileSync(
+    path.join(__dirname, 'react-init', 'dist', 'index.html')
+  )
+    .toString()
+    .replace('<div id="app"></div>', `<div id="app">${html}</div>`)
 }
 
 app.use('/dist', express.static('dist'))
@@ -38,7 +25,7 @@ app.get('*', (req, res) => {
       location={req.url}
       context={{}}
     >
-      <Pages/>
+      <Application/>
     </StaticRouter>
   )
 
