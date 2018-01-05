@@ -2,7 +2,9 @@ import express from 'express'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
+import { Provider } from 'react-redux'
 import Application from './components'
+import { appStore } from 'util/store'
 import path from 'path'
 import fs from 'fs'
 
@@ -21,12 +23,14 @@ app.use('/dist', express.static('dist'))
 app.get('*', (req, res) => {
 
   let html = renderToString(
-    <StaticRouter
-      location={req.url}
-      context={{}}
-    >
-      <Application/>
-    </StaticRouter>
+    <Provider>
+      <StaticRouter
+        location={req.url}
+        context={{}}
+      >
+        <Application/>
+      </StaticRouter>
+    </Provider>
   )
 
   res.send(renderFullPage(html, {}))
