@@ -57,13 +57,6 @@ module.exports = {
     }
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'static', 'index_default.html'),
-      title: config.site.title,
-      keywords: config.site.keywords,
-      description: config.site.description,
-      header: config.site.header
-    }),
     new ExtractTextPlugin('static/[name].[hash:5].css')
   ]
 }

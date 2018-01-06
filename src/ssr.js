@@ -7,15 +7,20 @@ import Application from './components'
 import { appStore } from 'util/store'
 import path from 'path'
 import fs from 'fs'
+import { Helmet } from 'react-helmet'
+
+const config = require('../config')
 
 const app = express()
 
-function renderFullPage(html, initialState) {
+function renderFullPage(html, meta, initialState) {
   return fs.readFileSync(
-    path.join(__dirname, 'react-init', 'dist', 'index.html')
+    path.join('dist', 'index.html')
   )
     .toString()
-    .replace('<div id="app"></div>', `<div id="app">${html}</div>`)
+    .replace('<meta data-meta="meta">', meta)
+    .replace('<div id="app"><div class="loadingContainer"><div><div class="loadingWhirlpool"></div></div></div></div>', `<div id="app">${html}</div>`)
+    .replace('<script>window.__INITIAL_STATE__={}</script>', `<script>window.__INITIAL_STATE__=${JSON.stringify(initialState)}</script>`)
 }
 
 app.use('/dist', express.static('dist'))
@@ -23,7 +28,7 @@ app.use('/dist', express.static('dist'))
 app.get('*', (req, res) => {
 
   let html = renderToString(
-    <Provider>
+    <Provider store={ appStore }>
       <StaticRouter
         location={req.url}
         context={{}}
@@ -32,8 +37,9 @@ app.get('*', (req, res) => {
       </StaticRouter>
     </Provider>
   )
+  const helmet = Helmet.renderStatic()
 
-  res.send(renderFullPage(html, {}))
+  res.send(renderFullPage(html, ([helmet.title.toString(), helmet.meta.toString()].join('')), {}))
 })
 
-app.listen(3000, () => console.log('server online in 3000'))
+app.listen(config.port, () => console.log('server online in ' + config.port))

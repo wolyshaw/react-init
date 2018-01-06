@@ -71,7 +71,11 @@ module.exports = {
       title: config.site.title,
       keywords: config.site.keywords,
       description: config.site.description,
-      header: config.site.header
+      header: config.site.header,
+      minify:{
+        removeComments: true,
+        collapseWhitespace: true
+      }
     }),
     new ExtractTextPlugin('static/[name].[hash:5].css'),
     new webpack.optimize.UglifyJsPlugin(),
