@@ -72,6 +72,7 @@ module.exports = {
       keywords: config.site.keywords,
       description: config.site.description,
       header: config.site.header,
+      favicon: path.join(__dirname, 'src', 'static', 'favicon.ico'),
       minify:{
         removeComments: true,
         collapseWhitespace: true

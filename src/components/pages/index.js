@@ -1,9 +1,27 @@
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { renderRoutes } from 'react-router-config'
 import Home from './Home'
 import Learning from './Learning'
 import NotFund from './NotFund'
+import PrivateRoute from '../elements/PrivateRoute'
+
+export const routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Home
+  },
+  {
+    path: '/learning',
+    exact: true,
+    component: Learning
+  },
+  {
+    path: '*',
+    component: NotFund
+  }
+]
 
 export default class Pages extends Component {
   constructor(props) {
@@ -13,20 +31,12 @@ export default class Pages extends Component {
   render() {
     return (
       <div>
-      <Helmet
-					htmlAttributes={{lang: "en", amp: undefined}}
-					titleTemplate="%s | React App"
-					titleAttributes={{itemprop: "name", lang: "en"}}
-					meta={[
-						{name: "description", content: "Server side rendering example"},
-						{name: "viewport", content: "width=device-width, initial-scale=1"},
-					]}
-				/>
-        <Switch>
+        {renderRoutes(routes)}
+        {/* <Switch>
           <Route exact path='/' component={ Home }/>
           <Route exact path='/learning' component={ Learning }/>
           <Route component={ NotFund }/>
-        </Switch>
+        </Switch> */}
       </div>
     )
   }

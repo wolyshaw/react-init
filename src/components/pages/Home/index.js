@@ -10,15 +10,20 @@ class Home extends PureComponent {
     super(...props)
   }
 
+  static Fetch(params){
+    return [setUser({user: 'user'})]
+  }
+
+  componentDidMount() {
+    dispatch(setUser({user: 'user'}))
+  }
+
   render() {
     console.log(this.props)
     return (
       <div>
-        <Helmet>
-          <title>My Title</title>
-          <meta name="description" content="Helmet application" />
-        </Helmet>
-        <span onClick={ () => console.log(1) }>this is page1</span>
+        <Helmet title='home'/>
+        <span onClick={ () => console.log(1) }>this is page17</span>
         <Link to={ '/learning' }>go react page</Link>
         <span onClick={ () => dispatch(setUser({user: 'user'})) }>test</span>
       </div>

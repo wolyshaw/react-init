@@ -65,7 +65,8 @@ module.exports = {
       title: config.site.title,
       keywords: config.site.keywords,
       description: config.site.description,
-      header: config.site.header
+      header: config.site.header,
+      favicon: path.join(__dirname, 'src', 'static', 'favicon.ico')
     }),
     new ExtractTextPlugin('static/play.css')
   ]

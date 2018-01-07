@@ -7,12 +7,13 @@ import Application from './components'
 import { appStore } from 'util/store'
 import path from 'path'
 import fs from 'fs'
+import { matchRoutes, renderRoutes } from 'react-router-config'
 import { Helmet } from 'react-helmet'
+import { routes } from './components/pages'
 
 const config = require('../config')
 
 const app = express()
-
 function renderFullPage(html, meta, initialState) {
   return fs.readFileSync(
     path.join('dist', 'index.html')
@@ -26,6 +27,23 @@ function renderFullPage(html, meta, initialState) {
 app.use('/dist', express.static('dist'))
 
 app.get('*', (req, res) => {
+  const branch = matchRoutes(routes, req.url)
+
+  let fetchs = branch.map(({route, match}) => {
+    if(route.component.Fetch && typeof route.component.Fetch === 'function') {
+      return route.component.Fetch(match.params)
+    } else {
+      return []
+    }
+  })
+    .map(s => {
+      if(typeof s === 'function') {
+        appStore.dispatch(s)
+      } else {
+        s.map(_s => appStore.dispatch(_s))
+      }
+      console.log(appStore.getState())
+    })
 
   let html = renderToString(
     <Provider store={ appStore }>
@@ -39,7 +57,7 @@ app.get('*', (req, res) => {
   )
   const helmet = Helmet.renderStatic()
 
-  res.send(renderFullPage(html, ([helmet.title.toString(), helmet.meta.toString()].join('')), {}))
+  res.send(renderFullPage(html, ([helmet.title.toString(), helmet.meta.toString()].join('')), appStore.getState()))
 })
 
 app.listen(config.port, () => console.log('server online in ' + config.port))
