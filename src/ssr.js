@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet'
 import { routes } from './components/pages'
 
 const config = require('../config')
+const store = appStore({})
 
 const app = express()
 function renderFullPage(html, meta, initialState) {
@@ -28,25 +29,18 @@ app.use('/dist', express.static('dist'))
 
 app.get('*', (req, res) => {
   const branch = matchRoutes(routes, req.url)
-
-  let fetchs = branch.map(({route, match}) => {
+  let fetchs = []
+  branch.map(({route, match}) => {
     if(route.component.Fetch && typeof route.component.Fetch === 'function') {
       return route.component.Fetch(match.params)
     } else {
       return []
     }
   })
-    .map(s => {
-      if(typeof s === 'function') {
-        appStore.dispatch(s)
-      } else {
-        s.map(_s => appStore.dispatch(_s))
-      }
-      console.log(appStore.getState())
-    })
+    .map(s => typeof s === 'function' ? fetchs.push(store.dispatch(s)) : s.map(_s => fetchs.push(store.dispatch(_s))))
 
   let html = renderToString(
-    <Provider store={ appStore }>
+    <Provider store={ store }>
       <StaticRouter
         location={req.url}
         context={{}}
@@ -57,7 +51,7 @@ app.get('*', (req, res) => {
   )
   const helmet = Helmet.renderStatic()
 
-  res.send(renderFullPage(html, ([helmet.title.toString(), helmet.meta.toString()].join('')), appStore.getState()))
+  Promise.all(fetchs).then(() => res.send(renderFullPage(html, ([helmet.title.toString(), helmet.meta.toString()].join('')), store.getState())))
 })
 
 app.listen(config.port, () => console.log('server online in ' + config.port))

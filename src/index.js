@@ -6,7 +6,7 @@ import Application from './components'
 import { appStore } from 'util/store'
 
 render(
-  <Provider store={ appStore }>
+  <Provider store={ appStore(window.__INITIAL_STATE__) }>
     <BrowserRouter>
       <Application/>
     </BrowserRouter>

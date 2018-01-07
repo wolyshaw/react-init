@@ -1,5 +1,10 @@
 export const setUser = data => {
   return dispatch => {
-    setTimeout(() => dispatch({ type: 'SET_USER_INFO', data }), 1000)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        dispatch({ type: 'SET_USER_INFO', data })
+        resolve(null)
+      }, 1000)
+    })
   }
 }
