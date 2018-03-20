@@ -1,37 +1,20 @@
-const path = require('path')
+const fs = require('fs')
+const http = require('http')
 const express = require('express')
-const config = require('./config')
+const proxy = require('http-proxy-middleware')
+const devServer = require('webpack-dev-middleware')
+const hotServer = require('webpack-hot-middleware')
 
 const app = express()
 
-const port = process.env.NODE_PORT || config.port
-const debug = process.env.NODE_ENV === 'production'
+const PORT = 3000
 
-if(process.env.NODE_ENV === 'development') {
-  const webpack = require('webpack')
-  const compression = require('compression')
-  const proxy = require('http-proxy-middleware')
-  const webpackDevMiddleware = require('webpack-dev-middleware')
-  const webpackHotMiddleware = require('webpack-hot-middleware')
-  const webpackDevConfig = require('./webpack.config.dev')
+const html = fs.readFileSync('./index.html').toString()
 
-  const compiler = webpack(webpackDevConfig)
-  app.use(compression())
-  app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackDevConfig.output.publicPath,
-    noInfo: true,
-    stats: {
-      colors: true
-    }
-  }))
-
-  app.use(webpackHotMiddleware(compiler))
-}
-
-app.use(express.static(config.distPath[process.env.NODE_ENV] || 'dev'))
+app.use('/dist', express.static('./dist'))
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dev', 'index.html'))
+  res.sendFile(html)
 })
 
-app.listen(port, () => console.log(`server online in ${port}`))
+app.listen(PORT, err => console.log(`create server success, port: ${PORT}`))

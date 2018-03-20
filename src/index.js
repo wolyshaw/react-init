@@ -1,15 +1,20 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import Application from './components'
-import { appStore } from 'util/store'
+import User from './User'
+import { a } from './a'
+
+const App = props => {
+  return (
+    <div onClick={ () => console.log(a, props) }>
+      App
+    </div>
+  )
+}
 
 render(
-  <Provider store={ appStore(window.__INITIAL_STATE__) }>
-    <BrowserRouter>
-      <Application/>
-    </BrowserRouter>
-  </Provider>,
+  <div>
+    <App/>
+    <User/>
+  </div>,
   document.getElementById('app')
 )
