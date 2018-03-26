@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 export default class User extends PureComponent {
 
   state = {
-    es: 'evn'
+    es: '123456asdas'
   }
 
   setData = async () => {

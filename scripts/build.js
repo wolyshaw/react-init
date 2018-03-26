@@ -1,9 +1,9 @@
 const chalk = require('chalk')
 const webpack = require('webpack')
 const config = require('./webpack/webpack.config.base')
-const clear = () => process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H')
+const clearWindow = () => process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H')
 
-clear()
+clearWindow()
 
 webpack(config, (error, stats) => {
   if(error) {

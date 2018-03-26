@@ -1,20 +1,44 @@
-const fs = require('fs')
-const http = require('http')
+// const fs = require('fs')
+// const path = require('path')
+const chalk = require('chalk')
 const express = require('express')
-const proxy = require('http-proxy-middleware')
-const devServer = require('webpack-dev-middleware')
-const hotServer = require('webpack-hot-middleware')
+
+const env = process.env.NODE_ENV || 'development'
+const config = require('./config')
 
 const app = express()
+const { port, staticDirName } = config[env]
 
-const PORT = 3000
+app.use(`/${staticDirName}`, express.static(`./${staticDirName}`))
 
-const html = fs.readFileSync('./index.html').toString()
+if(env === 'development') {
+  const proxy = require('http-proxy-middleware')
+  const webpack = require('webpack')
+  const devServer = require('webpack-dev-middleware')
+  const hotServer = require('webpack-hot-middleware')
+  const devConfig = require('./scripts/webpack/webpack.config.dev')
 
-app.use('/dist', express.static('./dist'))
+  const compiler = webpack(devConfig)
+  const instance = devServer(compiler, {
+    publicPath: devConfig.output.publicPath,
+    historyApiFallback: true,
+    stats: {
+      colors: true,
+      chunks: false,
+      chunkModules: false,
+      children: false,
+      modules: false,
+      version: false
+    }
+  })
+  const filter = (pathname, req) => req.method === 'POST'
+  app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
+  app.use(hotServer(compiler))
+  app.use(instance)
 
-app.get('*', (req, res) => {
-  res.sendFile(html)
-})
+  instance.waitUntilValid(() => {
+    console.log(chalk.green(`successfully, online in http://localhost:${port}`))
+  })
+}
 
-app.listen(PORT, err => console.log(`create server success, port: ${PORT}`))
+app.listen(port, () => process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H'))

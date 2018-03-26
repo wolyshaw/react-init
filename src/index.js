@@ -1,20 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
-import User from './User'
-import { a } from './a'
-
-const App = props => {
-  return (
-    <div onClick={ () => console.log(a, props) }>
-      App
-    </div>
-  )
-}
+import Application from './elements'
 
 render(
   <div>
-    <App/>
-    <User/>
+    <Application/>
   </div>,
   document.getElementById('app')
 )
