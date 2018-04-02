@@ -1,5 +1,4 @@
-// const fs = require('fs')
-// const path = require('path')
+const path = require('path')
 const chalk = require('chalk')
 const express = require('express')
 
@@ -22,6 +21,7 @@ if(env === 'development') {
   const instance = devServer(compiler, {
     publicPath: devConfig.output.publicPath,
     historyApiFallback: true,
+    writeToDisk: true,
     stats: {
       colors: true,
       chunks: false,
@@ -40,5 +40,9 @@ if(env === 'development') {
     console.log(chalk.green(`successfully, online in http://localhost:${port}`))
   })
 }
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, staticDirName, 'index.html'))
+})
 
 app.listen(port, () => process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H'))
