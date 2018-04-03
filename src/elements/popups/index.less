@@ -1,0 +1,24 @@
+.popups{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, .7);
+  overflow: hidden;
+  overflow-y: auto;
+  .container{
+    display: flex;
+    >div{
+      margin: 30px auto;
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 5px;
+      min-width: 500px;
+      border: 1px solid #d4d4d4;
+      &.place{
+        margin: auto;
+      }
+    }
+  }
+}

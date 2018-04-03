@@ -1,6 +1,8 @@
 const path = require('path')
 const config = require('../../config')
+const lessConfig = require('../../less.config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const mode = process.env.NODE_ENV || 'development'
 
 module.exports = {
@@ -34,6 +36,23 @@ module.exports = {
             options: {fix: true}
           }
         ]
+      },
+      {
+        test: /\.(css|less)$/,
+        include: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader?minimize!less-loader']
+      },
+      {
+        test: /\.(css|less)$/,
+        exclude: /node_modules/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader?modules&localIdentName=[local]--[hash:base64:5]',
+          {
+            loader: 'less-loader',
+            options: lessConfig
+          }
+        ]
       }
     ]
   },
@@ -41,6 +60,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: config[mode].title,
       template: 'src/static/index.html'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     })
   ]
 }
