@@ -1,11 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Application from './elements'
+import Application from './Application'
+import { BrowserRouter as Router } from 'react-router-dom'
 import './index.less'
 
 render(
-  <div>
+  <Router>
     <Application/>
-  </div>,
+  </Router>,
   document.getElementById('app')
 )

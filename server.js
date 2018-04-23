@@ -1,6 +1,7 @@
 const path = require('path')
 const chalk = require('chalk')
 const express = require('express')
+const rmdir = require('./scripts/rmdir')
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('./config')
@@ -11,12 +12,12 @@ const { port, staticDirName } = config[env]
 app.use(`/${staticDirName}`, express.static(`./${staticDirName}`))
 
 if(env === 'development') {
+  rmdir(path.join(__dirname, 'dev'))
   const proxy = require('http-proxy-middleware')
   const webpack = require('webpack')
   const devServer = require('webpack-dev-middleware')
   const hotServer = require('webpack-hot-middleware')
   const devConfig = require('./scripts/webpack/webpack.config.dev')
-
   const compiler = webpack(devConfig)
   const instance = devServer(compiler, {
     publicPath: devConfig.output.publicPath,

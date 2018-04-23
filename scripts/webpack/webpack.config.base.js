@@ -38,7 +38,12 @@ module.exports = {
         ]
       },
       {
-        test: /\.(css|less)$/,
+        test: /\.css$/,
+        include: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader?minimize']
+      },
+      {
+        test: /\.less$/,
         include: /node_modules/,
         use: [MiniCssExtractPlugin.loader, 'css-loader?minimize!less-loader']
       },
@@ -55,6 +60,15 @@ module.exports = {
         ]
       }
     ]
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(path.join(__dirname, '../', '../', 'src'))
+    }
+  },
+  node: {
+    __dirname: true,
+    __filename: true
   },
   plugins: [
     new HtmlWebpackPlugin({
