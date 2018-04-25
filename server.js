@@ -1,7 +1,6 @@
 const path = require('path')
 const chalk = require('chalk')
 const express = require('express')
-const render = require('./dist/render')
 const rmdir = require('./scripts/rmdir')
 
 const env = process.env.NODE_ENV || 'development'
@@ -52,6 +51,7 @@ if(env === 'development') {
 }
 
 if(env === 'ssr') {
+  const render = require('./dist/render')
   app.get('*', render.default)
 } else {
   app.get('*', (req, res) => {

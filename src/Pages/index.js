@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 import Bundle from '@/Components/Bundle'
-const HomeLazy = require('bundle-loader?lazy&name=Home!@/Pages/Home')
+import HomeLazy from '@/Pages/Home'
+import RouterInfoLazy from '@/Pages/RouterInfo'
 
 const Home = props => (
   <Bundle load={ HomeLazy }>
@@ -10,12 +11,19 @@ const Home = props => (
   </Bundle>
 )
 
-export default class Pages extends PureComponent {
+const RouterInfo = props => (
+  <Bundle load={ RouterInfoLazy }>
+    { (Container) => <Container { ...props }/> }
+  </Bundle>
+)
+
+export default class Pages extends Component {
   render() {
     return (
       <span>
         <Switch>
-          <Route exact  path='/' component={ Home } />
+          <Route exact path='/' component={ Home } />
+          <Route exact path='/router-info' component={ RouterInfo } />
         </Switch>
       </span>
     )
