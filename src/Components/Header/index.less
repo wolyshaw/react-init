@@ -1,14 +1,22 @@
 .header{
   box-shadow: 0 0 10px rgba(0, 0, 0, .05);
-  padding: 20px;
+  padding: 0 20px;
+  height: 60px;
+  line-height: 60px;
   >.nav{
-    width: @minWidth;
+    width: 100%;
+    max-width: @minWidth;
     margin: auto;
     >a{
       color: @linkColor;
       text-decoration: none;
+      display: inline-block;
+      padding: 0 20px;
+      line-height: 57px;
+      border-bottom: 3px solid transparent;
       &.active{
         color: @linkHoverColor;
+        border-bottom-color: rgba(0, 0, 0, .85);
       }
     }
   }

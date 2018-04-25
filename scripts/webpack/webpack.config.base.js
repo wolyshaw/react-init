@@ -11,19 +11,30 @@ module.exports = {
   output: {
     path: path.resolve('./' + config[mode].staticDirName),
     filename: '[name].js',
-    publicPath: '/'
+    chunkFilename: '[id].js',
+    publicPath: '/' + config[mode].staticDirName + '/'
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /Pages\/\w+\/index.js$/,
+        use: {
+          loader: 'bundle-loader',
+          options: {
+            lazy: true
+          }
+        }
+      },
+      {
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', {'targets': {browsers: ['last 2 versions', 'ie >= 9']}}], 'react'],
+              presets: [['env', {'targets': {browsers: ['last 2 versions', 'ie >= 9']}, modules: false}], 'react'],
               plugins: [
+                ['import', { libraryName: 'antd', libraryDirectory: 'es', style: true }],
                 'transform-runtime',
                 'transform-decorators',
                 'transform-class-properties',
@@ -45,7 +56,16 @@ module.exports = {
       {
         test: /\.less$/,
         include: /node_modules/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader?minimize!less-loader']
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader?minimize',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true
+            }
+          }
+        ]
       },
       {
         test: /\.(css|less)$/,
@@ -64,11 +84,18 @@ module.exports = {
   resolve: {
     alias: {
       '@': path.resolve(path.join(__dirname, '../', '../', 'src'))
-    }
+    },
+    extensions: ['.js', '.jsx', 'json', '.less', '.css']
   },
   node: {
     __dirname: true,
     __filename: true
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      name: 'common',
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -76,8 +103,8 @@ module.exports = {
       template: 'src/static/index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
+      filename: mode === 'development' ? '[name].css' : '[name]-[contenthash:5].css',
+      chunkFilename: mode === 'development' ? '[name].css' : '[name]-[contenthash:5].css'
     })
   ]
 }

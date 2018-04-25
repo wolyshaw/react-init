@@ -1,6 +1,7 @@
 const path = require('path')
 const chalk = require('chalk')
 const express = require('express')
+const render = require('./dist/render')
 const rmdir = require('./scripts/rmdir')
 
 const env = process.env.NODE_ENV || 'development'
@@ -40,10 +41,22 @@ if(env === 'development') {
   instance.waitUntilValid(() => {
     console.log(chalk.green(`successfully, online in http://localhost:${port}`))
   })
+} else if(env === 'production') {
+  const proxy = require('http-proxy-middleware')
+  const filter = (pathname, req) => req.method === 'POST'
+  app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
+} else if(env === 'ssr') {
+  const proxy = require('http-proxy-middleware')
+  const filter = (pathname, req) => req.method === 'POST'
+  app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
 }
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, staticDirName, 'index.html'))
-})
+if(env === 'ssr') {
+  app.get('*', render.default)
+} else {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, staticDirName, 'index.html'))
+  })
+}
 
-app.listen(port, () => process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H'))
+app.listen(port, (err) => err ? console.log(err) : process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H'))

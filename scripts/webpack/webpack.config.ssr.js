@@ -1,29 +1,10 @@
 const path = require('path')
-const merge = require('webpack-merge')
-const baseConfig = require('./webpack.config.base')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('../../config')
 const lessConfig = require('../../less.config')
 const mode = process.env.NODE_ENV || 'development'
 
-module.exports = [merge(baseConfig, {
-  name: 'web',
-  output: {
-    filename: '[name]-[chunkhash:5].js',
-    publicPath: '/dist/'
-  },
-  optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true
-      }),
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  }
-}),
-merge(baseConfig, {
+module.exports = {
+  mode,
   entry: './src/render',
   output: {
     path: path.resolve('./' + config[mode].staticDirName),
@@ -88,4 +69,17 @@ merge(baseConfig, {
       }
     ]
   },
-})]
+  resolve: {
+    alias: {
+      '@': path.resolve(path.join(__dirname, '../', '../', 'src'))
+    },
+    extensions: ['.js', '.jsx', 'json', '.less', '.css']
+  },
+  node: {
+    __dirname: true,
+    __filename: true
+  },
+  optimization: {
+    minimizer: []
+  }
+}

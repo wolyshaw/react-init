@@ -20,11 +20,15 @@ export default class Bundle extends PureComponent {
     }
   }
 
-  load = (props)=> {
+  load = (props) => {
     this.setState({ mod: null })
-    props.load((mod) => {
-      this.setState({ mod: mod.default ? mod.default : mod })
-    })
+    try {
+      props.load((mod) => {
+        this.setState({ mod: mod.default ? mod.default : mod })
+      })
+    } catch (error) {
+      this.setState({ mod: props.load })
+    }
   }
 
   render() {
