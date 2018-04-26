@@ -1,11 +1,8 @@
-const path = require('path')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.config.base')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const config = require('../../config')
 const lessConfig = require('../../less.config')
-const mode = process.env.NODE_ENV || 'development'
 
 module.exports = [merge(baseConfig, {
   name: 'web',
@@ -26,9 +23,8 @@ module.exports = [merge(baseConfig, {
 merge(baseConfig, {
   entry: './src/render',
   output: {
-    path: path.resolve('./' + config[mode].staticDirName),
     filename: 'render.js',
-    publicPath: '/' + config[mode].staticDirName + '/',
+    publicPath: '/dist/',
     libraryTarget: 'commonjs2'
   },
   target: 'node',
@@ -88,4 +84,5 @@ merge(baseConfig, {
       }
     ]
   },
+  plugins: []
 })]
