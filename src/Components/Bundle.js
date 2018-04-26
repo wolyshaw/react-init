@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component, PureComponent } from 'react'
 import propTypes from 'prop-types'
 
 export default class Bundle extends PureComponent {
@@ -22,12 +22,12 @@ export default class Bundle extends PureComponent {
 
   load = (props) => {
     this.setState({ mod: null })
-    try {
+    if(props.load.prototype instanceof PureComponent || props.load.prototype instanceof Component) {
+      this.setState({ mod: props.load })
+    } else {
       props.load((mod) => {
         this.setState({ mod: mod.default ? mod.default : mod })
       })
-    } catch (error) {
-      this.setState({ mod: props.load })
     }
   }
 
