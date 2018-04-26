@@ -1,7 +1,7 @@
 const path = require('path')
 const config = require('../../config')
 const lessConfig = require('../../less.config')
-const mode = process.env.NODE_ENV || 'development'
+const mode = 'production'
 
 module.exports = {
   mode,
@@ -16,7 +16,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: [
           {

@@ -1,6 +1,8 @@
+const path = require('path')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.config.base')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CleanPlugin = require('clean-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = merge(baseConfig, {
@@ -17,5 +19,9 @@ module.exports = merge(baseConfig, {
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
-  }
+  },
+  plugins: [new CleanPlugin(['dist'], {
+    root: path.join(__dirname, '..', '..'),
+    verbose: true
+  })]
 })

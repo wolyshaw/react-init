@@ -11,7 +11,6 @@ module.exports = {
   output: {
     path: path.resolve('./' + config[mode].staticDirName),
     filename: '[name].js',
-    chunkFilename: '[id].js',
     publicPath: '/' + config[mode].staticDirName + '/'
   },
   module: {
@@ -21,6 +20,7 @@ module.exports = {
         use: {
           loader: 'bundle-loader',
           options: {
+            name: '[folder]',
             lazy: true
           }
         }

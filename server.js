@@ -21,8 +21,8 @@ if(env === 'development') {
   const compiler = webpack(devConfig)
   const instance = devServer(compiler, {
     publicPath: devConfig.output.publicPath,
-    historyApiFallback: true,
-    writeToDisk: true,
+    serverSideRender: true,
+    writeToDisk: path => /\.html$/.test(path),
     stats: {
       colors: true,
       chunks: false,
@@ -36,10 +36,9 @@ if(env === 'development') {
   app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
   app.use(hotServer(compiler))
   app.use(instance)
-
-  instance.waitUntilValid(() => {
-    console.log(chalk.green(`successfully, online in http://localhost:${port}`))
-  })
+  // instance.waitUntilValid(() => {
+  //   console.log(chalk.green(`successfully, online in http://localhost:${port}`))
+  // })
 } else if(env === 'production') {
   const proxy = require('http-proxy-middleware')
   const filter = (pathname, req) => req.method === 'POST'
@@ -59,4 +58,8 @@ if(env === 'ssr') {
   })
 }
 
-app.listen(port, (err) => err ? console.log(err) : process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H'))
+app.listen(port, (err) => {
+  if(err) throw err
+  // process.stdout.write(process.platform === 'win32' ? '\x1Bc' : '\x1B[2J\x1B[3J\x1B[H')
+  console.log(chalk.green(`successfully, online in http://localhost:${port}`))
+})
