@@ -10,13 +10,25 @@ module.exports = {
     // API代理地址
     apiHost: 'http://localhost:8001',
     // 网址前缀
-    basename: ''
+    basename: '',
+    // 统计代码
+    analytics: ``
   },
   production: {
     port: 8080,
     title: 'react-init-production',
     staticDirName: 'dist',
     apiHost: 'http://localhost:8081',
-    basename: ''
+    basename: '',
+    analytics: `
+      <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'GA_TRACKING_ID');
+      </script>
+    `
   }
 }

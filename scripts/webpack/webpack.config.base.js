@@ -100,7 +100,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: config[mode].title,
-      template: 'src/static/index.html'
+      template: 'src/static/index.html',
+      analytics: config[mode].analytics
     }),
     new MiniCssExtractPlugin({
       filename: mode === 'development' ? '[name].css' : '[name]-[contenthash:5].css',
