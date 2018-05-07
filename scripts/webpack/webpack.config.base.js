@@ -83,7 +83,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(path.join(__dirname, '../', '../', 'src'))
+      '@': path.resolve(path.join(__dirname, '../', '../', 'src')),
+      'config': path.resolve(path.join(__dirname, '../', 'config'))
     },
     extensions: ['.js', '.jsx', 'json', '.less', '.css']
   },

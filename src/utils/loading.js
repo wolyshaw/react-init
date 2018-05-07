@@ -1,20 +1,22 @@
 import { isClient } from '@/utils'
 
-var times = 0
+let times = 0
 
-export var openLoading = function openLoading() {
+export const openLoading = () => {
   if (isClient) {
-    var loadingElement = document.querySelector('#loading')
-    if (loadingElement) {
-      loadingElement.classList.add('visible')
+    let loadingElement = document.querySelector('#loading')
+    if (!loadingElement) {
+      loadingElement = document.createElement('div')
+      loadingElement.id = 'loading'
     }
+    loadingElement.classList.add('visible')
     times++
   }
 }
 
-export var closeLoading = function closeLoading() {
+export const closeLoading = () => {
   if (isClient) {
-    var loadingElement = document.querySelector('#loading')
+    let loadingElement = document.querySelector('#loading')
     times--
     if (loadingElement && times <= 0) {
       loadingElement.classList.remove('visible')
