@@ -1,4 +1,4 @@
-import { Component, PureComponent } from 'react'
+import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -25,14 +25,14 @@ export default class Bundle extends Component {
 
   load = (props) => {
     this.setState({mod: null})
-    const proto = props.load.prototype
-    if(proto instanceof PureComponent || proto instanceof Component) {
-      this.setState({ mod: props.load })
-    } else {
-      props.load((mod) => {
-        this.setState({ mod: mod.default ? mod.default : mod })
-      })
-    }
+    this.setState({ mod: props.load })
+    // try {
+    //   props.load((mod) => {
+    //     this.setState({ mod: mod.default ? mod.default : mod })
+    //   })
+    // } catch (error) {
+    //   this.setState({ mod: props.load })
+    // }
   }
 
   render() {
