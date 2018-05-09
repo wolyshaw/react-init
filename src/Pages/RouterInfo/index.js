@@ -4,6 +4,10 @@ import styles from './index.less'
 export default class RouterInfo extends PureComponent {
   state = {}
 
+  componentWillMount() {
+    console.log('RouterInfo')
+  }
+
   render() {
     return (
       <div className={ styles['router-info'] }>

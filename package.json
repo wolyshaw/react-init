@@ -5,11 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development node server",
-    "build:client": "cross-env NODE_ENV=production node ./scripts/build.js",
-    "build:server": "cross-env NODE_ENV=ssr node ./scripts/build.js",
-    "build": "cross-env NODE_ENV=production node ./scripts/build.js && cross-env NODE_ENV=ssr node ./scripts/build.js",
-    "start:prod": "cross-env NODE_ENV=production node server",
-    "start:ssr": "cross-env NODE_ENV=ssr node server"
+    "build": "cross-env NODE_ENV=production node ./scripts/build.js"
   },
   "repository": {
     "type": "git",
@@ -49,27 +45,28 @@
     "fsevents": "^1.2.3",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.18.0",
-    "less": "^3.0.2",
+    "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.4.0",
     "optimize-css-assets-webpack-plugin": "^4.0.1",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.1.2",
+    "webpack": "^4.7.0",
+    "webpack-cli": "^2.1.3",
     "webpack-dev-middleware": "^3.1.3",
     "webpack-hot-middleware": "^2.22.1",
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "antd": "^3.4.5",
+    "antd": "^3.5.0",
     "bundle-loader": "^0.5.6",
-    "isomorphic-fetch": "^2.2.1",
     "prop-types": "^15.6.1",
-    "purecss": "^1.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
     "react-router-config": "^1.0.0-beta.4",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0"
   }
 }

@@ -1,7 +1,6 @@
 const path = require('path')
 const chalk = require('chalk')
 const express = require('express')
-const rmdir = require('./scripts/rmdir')
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('./config')
@@ -12,7 +11,6 @@ const { port, staticDirName } = config[env]
 app.use(`/${staticDirName}`, express.static(`./${staticDirName}`))
 
 if(env === 'development') {
-  rmdir(path.join(__dirname, 'dev'))
   const proxy = require('http-proxy-middleware')
   const webpack = require('webpack')
   const devServer = require('webpack-dev-middleware')
@@ -34,6 +32,8 @@ if(env === 'development') {
   })
   const filter = (pathname, req) => req.method === 'POST'
   app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
+  app.use('/events', proxy({target: config[env].apiHost, changeOrigin: true, secure: false}))
+  app.use('/public', proxy({target: config[env].apiHost, changeOrigin: true, secure: false}))
   app.use(hotServer(compiler))
   app.use(instance)
   // instance.waitUntilValid(() => {
@@ -43,20 +43,11 @@ if(env === 'development') {
   const proxy = require('http-proxy-middleware')
   const filter = (pathname, req) => req.method === 'POST'
   app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
-} else if(env === 'ssr') {
-  const proxy = require('http-proxy-middleware')
-  const filter = (pathname, req) => req.method === 'POST'
-  app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
 }
 
-if(env === 'ssr') {
-  const render = require('./dist/render')
-  app.get('*', render.default)
-} else {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, staticDirName, 'index.html'))
-  })
-}
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, staticDirName, 'index.html'))
+})
 
 app.listen(port, (err) => {
   if(err) throw err

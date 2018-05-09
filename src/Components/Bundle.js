@@ -1,28 +1,32 @@
-import React, { Component, PureComponent } from 'react'
-import propTypes from 'prop-types'
+import { Component, PureComponent } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-export default class Bundle extends PureComponent {
+@connect(({userInfo}) => ({userInfo}))
+export default class Bundle extends Component {
 
   static propTypes = {
-    load: propTypes.func,
-    children: propTypes.func
+    load: PropTypes.func,
+    children: PropTypes.func,
+    userInfo: PropTypes.any
   }
 
   state = { mod: null }
 
-  componentWillMount = () => {
+  componentDidMount() {
     this.load(this.props)
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps(nextProps){
     if (nextProps.load !== this.props.load) {
       this.load(nextProps)
     }
   }
 
   load = (props) => {
-    this.setState({ mod: null })
-    if(props.load.prototype instanceof PureComponent || props.load.prototype instanceof Component) {
+    this.setState({mod: null})
+    const proto = props.load.prototype
+    if(proto instanceof PureComponent || proto instanceof Component) {
       this.setState({ mod: props.load })
     } else {
       props.load((mod) => {
@@ -33,10 +37,7 @@ export default class Bundle extends PureComponent {
 
   render() {
     return (
-      <span>
-        { this.state.mod ? this.props.children(this.state.mod) : null }
-      </span>
+      this.state.mod ? this.props.children(this.state.mod) : null
     )
   }
 }
-
