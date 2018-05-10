@@ -30,10 +30,16 @@ if(env === 'development') {
       version: false
     }
   })
-  const filter = (pathname, req) => req.method === 'POST'
+  const filter = (pathname, req) => {
+    const isStaticDir = /^\/events\/|^\/public\//.test(req.url)
+    const isStaticFile = !/^\/dev\/|^\/dist\//.test(req.url) &&
+      /\.js$|\.css$|\.html$|\.jpg$|\.png$|\.svg$/.test(req.url)
+    const getMethod = req.method === 'GET' && (isStaticDir || isStaticFile)
+
+    return req.method === 'POST' || getMethod
+  }
+
   app.use(proxy(filter, {target: config[env].apiHost, changeOrigin: true, secure: false}))
-  app.use('/events', proxy({target: config[env].apiHost, changeOrigin: true, secure: false}))
-  app.use('/public', proxy({target: config[env].apiHost, changeOrigin: true, secure: false}))
   app.use(hotServer(compiler))
   app.use(instance)
   // instance.waitUntilValid(() => {

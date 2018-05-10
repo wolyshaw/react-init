@@ -15,16 +15,16 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /Pages\/\w+\/index.js$/,
-      //   use: {
-      //     loader: 'bundle-loader',
-      //     options: {
-      //       name: '[folder]',
-      //       lazy: true
-      //     }
-      //   }
-      // },
+      {
+        test: /(Pages(\/\w+\/|\\\w+\\)index.js$)/,
+        use: {
+          loader: 'bundle-loader',
+          options: {
+            name: '[folder]',
+            lazy: true
+          }
+        }
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,

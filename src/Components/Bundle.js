@@ -25,14 +25,13 @@ export default class Bundle extends Component {
 
   load = (props) => {
     this.setState({mod: null})
-    this.setState({ mod: props.load })
-    // try {
-    //   props.load((mod) => {
-    //     this.setState({ mod: mod.default ? mod.default : mod })
-    //   })
-    // } catch (error) {
-    //   this.setState({ mod: props.load })
-    // }
+    try {
+      props.load((mod) => {
+        this.setState({ mod: mod.default ? mod.default : mod })
+      })
+    } catch (error) {
+      this.setState({ mod: props.load })
+    }
   }
 
   render() {
