@@ -1,5 +1,5 @@
 {
-  "name": "react-antd-admin",
+  "name": "react-init",
   "version": "1.0.0",
   "description": "",
   "main": "scripts/server.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wolyshaw/react-antd-admin.git"
+    "url": "git+https://github.com/wolyshaw/react-init.git"
   },
   "author": "wolyshaw",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wolyshaw/react-antd-admin/issues"
+    "url": "https://github.com/wolyshaw/react-init/issues"
   },
-  "homepage": "https://github.com/wolyshaw/react-antd-admin#readme",
+  "homepage": "https://github.com/wolyshaw/react-init#readme",
   "dependencies": {
     "antd": "^3.26.0",
     "react": "^16.12.0",
