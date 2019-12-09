@@ -40,14 +40,6 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          pxLoader,
-          {
-            loader: 'less-loader',
-            options: {
-              modifyVars: {},
-              javascriptEnabled: true
-            }
-          }
         ]
       },
       {
@@ -56,17 +48,6 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader?modules&localIdentName=[local]--[hash:base64:5]',
-          pxLoader,
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: () => ([
-                require('postcss-import'),
-                require('postcss-custom-properties')(),
-                require('autoprefixer')({browsers: ['ios >= 7.0']})
-              ])
-            }
-          },
           {
             loader: 'less-loader',
           }
