@@ -68,9 +68,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: setting.title,
-      template: setting.template,
-      analytics: 'html.analytics',
+      title: 'react-init',
+      template: path.resolve('./src/static/index.html'),
     }),
     new MiniCssExtractPlugin({
       filename: '[name]-[contenthash].css',
